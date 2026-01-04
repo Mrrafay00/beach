@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beach Event Management - Order Page</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #1a1a1a;
+            background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhY2h8ZW58MHx8MHx8fDA%3D');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .overlay {
+            min-height: 100vh;
+        }
+        
+        .beach-header {
+            background-color: transparent;
+            color: #1a1a1a;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .beach-header h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+        }
+        
+        .beach-header p {
+            font-size: 1.2rem;
+        }
+        
+        .section-header {
+            color: #1a1a1a;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .form-card {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background-color: transparent;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+        
+        .form-card .card-header {
+            background-color: transparent;
+            color: #1a1a1a;
+            font-weight: 600;
+            padding: 12px 15px;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 6px;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 6px;
+            padding: 10px 12px;
+            border: 2px solid #ccc;
+            background-color: transparent;
+            color: #1a1a1a;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #888;
+            box-shadow: 0 0 0 0.2rem rgba(136, 136, 136, 0.25);
+        }
+        
+        .required::after {
+            content: " *";
+            color: #dc3545;
+        }
+        
+        .beach-icon {
+            margin-right: 8px;
+        }
+        
+        .service-checkbox {
+            margin-bottom: 10px;
+        }
+        
+        .service-checkbox label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-radius: 6px;
+        }
+        
+        .service-checkbox input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .btn-beach-primary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid #444;
+            padding: 10px 25px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        
+        .btn-beach-primary:hover {
+            background-color: #666;
+            color: white;
+        }
+        
+        .btn-beach-secondary {
+            background-color: transparent;
+            color: #1a1a1a;
+            border: 2px solid #ccc;
+            padding: 10px 25px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        
+        .btn-beach-secondary:hover {
+            background-color: #ddd;
+            color: #1a1a1a;
+        }
+        
+        .total-cost {
+            background-color: transparent;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .total {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            border-top: 2px solid #ccc;
+            padding-top: 10px;
+        }
+        
+        .beach-note {
+            background-color: transparent;
+            border: 2px solid #ddd;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        
+        .beach-note h6 {
+            font-weight: 600;
+        }
+        
+        .summary-section {
+            background-color: transparent;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 25px;
+        }
+        
+        input[type="date"], input[type="time"], input[type="number"] {
+            background-color: transparent;
+        }
+        
+        @media (max-width: 768px) {
+            .beach-header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-card {
+                margin-bottom: 20px;
+            }
+        }
+        .nav-link:hover{
+            color: #ddd;
+        }
+        #footer-link{
+            list-style: none;
+        }
+        #footer-link a{
+            text-decoration: none;
+            color: #1a1a1a;
+        }
+        #footer-link a:hover{
+            color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <nav class="navbar navbar-expand-lg bg-transparent">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Evora</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Gallery</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Order Now</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Header Section -->
+        <header class="beach-header text-center">
+            <div class="container">
+                <h1><i class="fas fa-umbrella-beach"></i> Beach Event Management</h1>
+                <p>Plan your perfect beach event with us - from weddings to corporate gatherings</p>
+            </div>
+        </header>
+
+        <!-- Main Content Section -->
+        <main>
+            <section>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-md-8">
+                            <!-- Order Form -->
+                            <form id="beachEventForm">
+                                <!-- Personal Information -->
+                                <div class="card form-card">
+                                    <div class="card-header">
+                                        <i class="fas fa-user beach-icon"></i> Personal Information
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="fullName" class="form-label required">Full Name</label>
+                                                <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="contactNumber" class="form-label required">Contact Number</label>
+                                                <input type="tel" class="form-control" id="contactNumber" placeholder="Enter your phone number" required>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="emailAddress" class="form-label required">Email Address</label>
+                                            <input type="email" class="form-control" id="emailAddress" placeholder="Enter your email address" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="address" class="form-label">Address (Optional)</label>
+                                            <textarea class="form-control" id="address" rows="2" placeholder="Enter your address if relevant to the event"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Event Details -->
+                                <div class="card form-card">
+                                    <div class="card-header">
+                                        <i class="fas fa-calendar-alt beach-icon"></i> Event Details
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="eventType" class="form-label required">Event Type</label>
+                                                <select class="form-select" id="eventType" required>
+                                                    <option value="" selected disabled>Select event type</option>
+                                                    <option value="wedding">Wedding</option>
+                                                    <option value="birthday">Birthday Party</option>
+                                                    <option value="corporate">Corporate Event</option>
+                                                    <option value="engagement">Engagement</option>
+                                                    <option value="anniversary">Anniversary</option>
+                                                    <option value="family">Family Gathering</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="eventDate" class="form-label required">Event Date</label>
+                                                <input type="date" class="form-control" id="eventDate" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="eventTime" class="form-label required">Event Time</label>
+                                                <input type="time" class="form-control" id="eventTime" required>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="numberOfGuests" class="form-label required">Number of Guests</label>
+                                                <input type="number" class="form-control" id="numberOfGuests" min="1" max="500" value="50" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="eventDuration" class="form-label required">Duration of Event (hours)</label>
+                                                <select class="form-select" id="eventDuration" required>
+                                                    <option value="2">2 hours</option>
+                                                    <option value="3">3 hours</option>
+                                                    <option value="4" selected>4 hours</option>
+                                                    <option value="5">5 hours</option>
+                                                    <option value="6">6 hours</option>
+                                                    <option value="7">7 hours</option>
+                                                    <option value="8">8 hours</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="eventTheme" class="form-label">Event Theme or Special Requests</label>
+                                                <input type="text" class="form-control" id="eventTheme" placeholder="E.g., Tropical, Sunset, Bohemian">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Venue Selection -->
+                                <div class="card form-card">
+                                    <div class="card-header">
+                                        <i class="fas fa-map-marked-alt beach-icon"></i> Venue Selection
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <label for="beachLocation" class="form-label required">Preferred Beach Location</label>
+                                            <select class="form-select" id="beachLocation" required>
+                                                <option value="" selected disabled>Select beach location</option>
+                                                <option value="private">Private Beach Area</option>
+                                                <option value="north">North Beach</option>
+                                                <option value="south">South Beach</option>
+                                                <option value="sunset">Sunset View Beach</option>
+                                                <option value="cove">Secluded Cove Beach</option>
+                                                <option value="other">Other (Specify in notes)</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="spaceRequirements" class="form-label">Space Requirements</label>
+                                            <textarea class="form-control" id="spaceRequirements" rows="2" placeholder="E.g., Large tent, seating area for 100, dance floor"></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Beachside Preferences</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="sunsetView">
+                                                <label class="form-check-label" for="sunsetView">
+                                                    Sunset View
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="beachBonfire">
+                                                <label class="form-check-label" for="beachBonfire">
+                                                    Beach Bonfire Area
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="secludedArea">
+                                                <label class="form-check-label" for="secludedArea">
+                                                    Secluded/Private Area
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="beachAccess">
+                                                <label class="form-check-label" for="beachAccess">
+                                                    Direct Beach Access
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Services Required -->
+                                <div class="card form-card">
+                                    <div class="card-header">
+                                        <i class="fas fa-concierge-bell beach-icon"></i> Services Required
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h6 class="mb-3 section-header">Catering</h6>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="cateringStandard"> Standard Meal Service
+                                                    </label>
+                                                </div>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="cateringPremium"> Premium Meal Service
+                                                    </label>
+                                                </div>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="cateringVegetarian"> Vegetarian Options
+                                                    </label>
+                                                </div>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="cateringVegan"> Vegan Options
+                                                    </label>
+                                                </div>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="cateringNonVeg"> Non-Vegetarian Options
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h6 class="mb-3 section-header">Audio/Visual Equipment</h6>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="audioDJ"> DJ Setup
+                                                    </label>
+                                                </div>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="audioSpeakers"> Speaker System
+                                                    </label>
+                                                </div>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="audioMicrophone"> Microphone
+                                                    </label>
+                                                </div>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="audioProjector"> Projector & Screen
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mt-3">
+                                            <div class="col-md-6">
+                                                <h6 class="mb-3 section-header">Decorations</h6>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="decorFlowers"> Floral Arrangements
+                                                    </label>
+                                                </div>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="decorLights"> Lighting & Lanterns
+                                                    </label>
+                                                </div>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="decorThemed"> Themed Decorations
+                                                    </label>
+                                                </div>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="decorSeating"> Decorative Seating
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <h6 class="mb-3 section-header">Staffing & Other Services</h6>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="staffCoordinator"> Event Coordinator
+                                                    </label>
+                                                </div>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="staffServers"> Servers & Bartenders
+                                                    </label>
+                                                </div>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="staffPhotographer"> Photographer
+                                                    </label>
+                                                </div>
+                                                <div class="service-checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="securityPermits"> Security & Permits
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Payment & Legal Information -->
+                                <div class="card form-card">
+                                    <div class="card-header">
+                                        <i class="fas fa-file-contract beach-icon"></i> Payment & Legal Information
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="beach-note">
+                                            <h6><i class="fas fa-info-circle"></i> Important Note</h6>
+                                            <p class="mb-0">A 30% deposit is required to confirm your booking. Full payment must be made 7 days before the event date.</p>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="depositAmount" class="form-label">Deposit Amount (30%)</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">$</span>
+                                                    <input type="text" class="form-control" id="depositAmount" value="750" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="totalCost" class="form-label">Total Event Cost</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">$</span>
+                                                    <input type="text" class="form-control" id="totalCost" value="2500" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="paymentOptions" class="form-label required">Payment Method</label>
+                                            <select class="form-select" id="paymentOptions" required>
+                                                <option value="" selected disabled>Select payment method</option>
+                                                <option value="credit">Credit Card</option>
+                                                <option value="debit">Debit Card</option>
+                                                <option value="bank">Bank Transfer</option>
+                                                <option value="check">Check</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="termsConditions" required>
+                                                <label class="form-check-label" for="termsConditions">
+                                                    I agree to the Terms & Conditions, including cancellation policies and liability waivers
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="insuranceRequired">
+                                                <label class="form-check-label" for="insuranceRequired">
+                                                    I require event insurance for this beachside event (additional cost may apply)
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                            <button type="button" class="btn btn-beach-secondary me-md-2" id="resetBtn">Reset Form</button>
+                                            <button type="submit" class="btn btn-beach-primary">Submit Booking Request</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Summary Sidebar -->
+                        <div class="col-12 col-md-4">
+                            <div class="summary-section">
+                                <h3 class="section-header">Event Summary</h3>
+                                <div id="eventSummary">
+                                    <p>Fill out the form to see your event summary here.</p>
+                                    <p>Your selections will appear here with pricing details.</p>
+                                </div>
+                                
+                                <div class="total-cost">
+                                    <h5>Cost Breakdown</h5>
+                                    <div class="cost-item">
+                                        <span>Venue Rental:</span>
+                                        <span>$800</span>
+                                    </div>
+                                    <div class="cost-item">
+                                        <span>Catering (50 guests):</span>
+                                        <span>$1000</span>
+                                    </div>
+                                    <div class="cost-item">
+                                        <span>Services & Equipment:</span>
+                                        <span>$500</span>
+                                    </div>
+                                    <div class="cost-item">
+                                        <span>Staffing:</span>
+                                        <span>$200</span>
+                                    </div>
+                                    <div class="cost-item total">
+                                        <span>Total Cost:</span>
+                                        <span>$2500</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <h6><i class="fas fa-phone-alt beach-icon"></i> Contact Us</h6>
+                                    <p class="mb-1"><strong>Phone:</strong> +1 (555) 123-4567</p>
+                                    <p class="mb-1"><strong>Email:</strong> info@beachevents.com</p>
+                                    <p><strong>Hours:</strong> Mon-Fri 9am-6pm</p>
+                                </div>
+                                
+                                <div class="beach-note mt-3">
+                                    <small><i class="fas fa-lightbulb"></i> <strong>Pro Tip:</strong> Book at least 30 days in advance for the best beach locations and availability.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <h1>Evora</h1>
+                        <p>Your modern event platform</p>
+                        <p>Connecting people and creating unforgettable experiences. From private parties to grand corporate events, Evora handles it all with style and precision</p>
+                    </div>
+                <div class="col-12 col-md-3">
+                    <h5>Quick Links</h5>
+                    <ul id="footer-link">
+                        <li><a href="">Home</a></li>
+                        <li><a href="">Home</a></li>
+                        <li><a href="">Home</a></li>
+                        <li><a href="">Home</a></li>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <h5>Stay Connected</h5>
+                        <p>Subscribe for exclusive updates & offers</p>
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="eamil" placeholder="email" aria-label="email"/>
+                            <button class="btn btn-outline-success" type="submit">Sub</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Set minimum date to today for event date
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('eventDate').min = today;
+            
+            // Initialize form with some default values
+            const eventDate = new Date();
+            eventDate.setDate(eventDate.getDate() + 30);
+            document.getElementById('eventDate').value = eventDate.toISOString().split('T')[0];
+            document.getElementById('eventTime').value = '16:00';
+            
+            // Form submission handler
+            document.getElementById('beachEventForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                const requiredFields = document.querySelectorAll('#beachEventForm [required]');
+                let isValid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.classList.add('is-invalid');
+                    } else {
+                        field.classList.remove('is-invalid');
+                    }
+                });
+                
+                if (!document.getElementById('termsConditions').checked) {
+                    isValid = false;
+                    alert('Please agree to the Terms & Conditions to proceed.');
+                }
+                
+                if (isValid) {
+                    // In a real application, you would submit the form data to a server
+                    alert('Thank you for your booking request! We will contact you within 24 hours to confirm your beach event details.');
+                    // Reset form after submission
+                    document.getElementById('beachEventForm').reset();
+                    updateSummary();
+                } else {
+                    alert('Please fill in all required fields before submitting.');
+                }
+            });
+            
+            // Reset form button
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset the form? All entered data will be lost.')) {
+                    document.getElementById('beachEventForm').reset();
+                    updateSummary();
+                }
+            });
+            
+            // Update summary when form changes
+            const formInputs = document.querySelectorAll('#beachEventForm input, #beachEventForm select, #beachEventForm textarea');
+            formInputs.forEach(input => {
+                input.addEventListener('change', updateSummary);
+                input.addEventListener('input', updateSummary);
+            });
+            
+            // Initial summary update
+            updateSummary();
+        });
+        
+        // Update the event summary based on form inputs
+        function updateSummary() {
+            const summaryDiv = document.getElementById('eventSummary');
+            
+            // Get form values
+            const fullName = document.getElementById('fullName').value || 'Not provided';
+            const eventType = document.getElementById('eventType').value || 'Not selected';
+            const eventDate = document.getElementById('eventDate').value || 'Not selected';
+            const eventTime = document.getElementById('eventTime').value || 'Not selected';
+            const numberOfGuests = document.getElementById('numberOfGuests').value || '50';
+            const beachLocation = document.getElementById('beachLocation').value || 'Not selected';
+            
+            // Format date
+            let formattedDate = 'Not selected';
+            if (eventDate !== 'Not selected') {
+                const dateObj = new Date(eventDate);
+                formattedDate = dateObj.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            }
+            
+            // Format time
+            let formattedTime = 'Not selected';
+            if (eventTime !== 'Not selected') {
+                const timeParts = eventTime.split(':');
+                const hours = parseInt(timeParts[0]);
+                const minutes = timeParts[1];
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                const formattedHours = hours % 12 || 12;
+                formattedTime = `${formattedHours}:${minutes} ${ampm}`;
+            }
+            
+            // Create summary HTML
+            let summaryHTML = `
+                <h5>Your Event Details</h5>
+                <p><strong>Name:</strong> ${fullName}</p>
+                <p><strong>Event Type:</strong> ${eventType.charAt(0).toUpperCase() + eventType.slice(1)}</p>
+                <p><strong>Date:</strong> ${formattedDate}</p>
+                <p><strong>Time:</strong> ${formattedTime}</p>
+                <p><strong>Guests:</strong> ${numberOfGuests} people</p>
+                <p><strong>Beach Location:</strong> ${beachLocation.charAt(0).toUpperCase() + beachLocation.slice(1)}</p>
+                <hr>
+                <h6>Selected Services:</h6>
+                <ul class="list-unstyled">
+            `;
+            
+            // Check which services are selected
+            const serviceCheckboxes = document.querySelectorAll('.service-checkbox input[type="checkbox"]:checked');
+            if (serviceCheckboxes.length > 0) {
+                serviceCheckboxes.forEach(checkbox => {
+                    const label = checkbox.closest('label').textContent.trim();
+                    summaryHTML += `<li><i class="fas fa-check text-success me-2"></i>${label}</li>`;
+                });
+            } else {
+                summaryHTML += `<li class="text-muted">No services selected yet</li>`;
+            }
+            
+            summaryHTML += `</ul>`;
+            
+            // Update the summary section
+            summaryDiv.innerHTML = summaryHTML;
+            
+            // Update cost based on number of guests
+            const guestCount = parseInt(numberOfGuests) || 50;
+            const cateringCost = guestCount * 20; // $20 per guest
+            const venueCost = 800;
+            const servicesCost = 500;
+            const staffingCost = 200;
+            const totalCost = venueCost + cateringCost + servicesCost + staffingCost;
+            const depositAmount = totalCost * 0.3;
+            
+            // Update cost display
+            document.getElementById('depositAmount').value = `$${depositAmount.toFixed(0)}`;
+            document.getElementById('totalCost').value = `$${totalCost.toFixed(0)}`;
+            
+            // Update cost breakdown
+            document.querySelector('.total-cost .cost-item:nth-child(2) span:last-child').textContent = `$${cateringCost}`;
+            document.querySelector('.total-cost .total span:last-child').textContent = `$${totalCost}`;
+        }
+    </script>
+</body>
+</html>
