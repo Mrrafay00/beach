@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap Hero Slider</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* --- NAVBAR --- */
+        #mainNav {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            transition: background 0.5s ease;
+            background: transparent;
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #fff !important;
+        }
+
+        .nav-link:hover {
+            color: #f0c14b !important;
+        }
+
+        /* --- HERO SLIDER --- */
+        .hero {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            padding-left: 10%;
+            transition: opacity 1s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        .slide::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: -1;
+        }
+
+        .content {
+            max-width: 600px;
+            color: #fff;
+        }
+
+        h1 {
+            font-size: clamp(2.8rem, 8vw, 5.5rem);
+            line-height: 1;
+            text-transform: uppercase;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 14px 36px;
+            border: 1px solid #fff;
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .hero-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        /* --- DOTS --- */
+        .controls {
+            position: absolute;
+            bottom: 50px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 20;
+        }
+
+        .indicators {
+            display: flex;
+            gap: 15px;
+        }
+
+        .dot {
+            width: 40px;
+            height: 2px;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: 0.4s;
+        }
+
+        .dot.active {
+            background: #fff;
+            height: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+        }
+
+        /* --- FOOTER --- */
+        #foot {
+            transition: background 0.5s ease;
+            background: #222;
+            color: #fff;
+            padding: 60px 0;
+        }
+
+        #foot h5 {
+            margin-bottom: 20px;
+        }
+
+        #footer-link {
+            list-style: none;
+            padding: 0;
+        }
+
+        #footer-link li {
+            margin-bottom: 10px;
+        }
+
+        #footer-link a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        #footer-link a:hover {
+            color: #f0c14b;
+        }
+
+        #foot input.form-control {
+            border-radius: 0;
+        }
+
+        #foot button.btn {
+            border-radius: 0;
+        }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg" id="mainNav">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Evora</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">About us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="order.html">Order Now</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SLIDER -->
+    <section class="hero">
+        <div class="slide active">
+            <img src="https://media.istockphoto.com/id/1295012737/photo/a-family-walks-hand-in-hand-down-a-tropical-paradise-beach-during-sunset.jpg?s=612x612&w=0&k=20&c=F__LaYcJowJYJ2h8wGK07YqLSmrKBl6irMgHlJ1k8eM=" class="slide-bg">
+            <div class="content">
+                <h1>Plan Your<br>Perfect Event</h1>
+                <p>Evora makes your parties, weddings, and corporate events unforgettable.</p>
+                <a href="contact" class="hero-btn">Get Started</a>
+            </div>
+        </div>
+        <div class="slide">
+            <img src="https://media.istockphoto.com/id/2212536827/photo/man-solo-traveler-holding-his-camera-and-walking-on-the-shallow-surface-of-water-during-sunset.jpg?s=612x612&w=0&k=20&c=a9QCVRRNXwUhVzG2FjeTJPA_179-yQ3wpFB8zUYdlUo=" class="slide-bg">
+            <div class="content">
+                <h1>Create<br>Memories</h1>
+                <p>Stylish events crafted with elegance and passion.</p>
+                <a href="gallery.html" class="hero-btn">Explore Gallery</a>
+            </div>
+        </div>
+        <div class="slide">
+            <img src="https://media.istockphoto.com/id/1143248555/photo/dj-mixing-at-sunset-beach-party-in-summer-vacation-outdoor-disc-jockey-hands-playing-music.jpg?s=612x612&w=0&k=20&c=0s2PzGYE5bljiyybqxNBUDja1P4o2WkM0XdxFtimEuc=" class="slide-bg">
+            <div class="content">
+                <h1>Celebrate<br>In Style</h1>
+                <p>Moments that last forever with Evora Events.</p>
+                <a href="order.html" class="hero-btn">Book Now</a>
+            </div>
+        </div>
+
+        <!-- DOTS -->
+        <div class="controls">
+            <div class="indicators">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="foot">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-6 mb-4">
+                    <h2>Evora</h2>
+                    <p>Your modern event platform connecting people and creating unforgettable experiences.</p>
+                </div>
+                <div class="col-6 col-md-3 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul id="footer-link">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Gallery</a></li>
+                        <li><a href="#">Order Now</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-3 mb-4">
+                    <h5>Stay Connected</h5>
+                    <p>Subscribe for exclusive updates & offers</p>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="email" placeholder="Email" aria-label="email"/>
+                        <button class="btn btn-outline-light" type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const nav = document.getElementById('mainNav');
+        const footer = document.getElementById('foot');
+        
+        let current = 0;
+        const intervalTime = 4000; // 4 seconds
+        
+        function updateSlider(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+
+            // Keep navbar and footer connected visually
+            nav.style.background = "transparent"; 
+            footer.style.background = "#222";
+        }
+        
+        function autoSlide() {
+            current = (current + 1) % slides.length;
+            updateSlider(current);
+        }
+        
+        setInterval(autoSlide, intervalTime);
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                current = index;
+                updateSlider(current);
+            });
+        });
+    </script>
+  </body>
+</html>
