@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Evora Event Management</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #6c757d;
+            --sindh-color: #198754;
+            --balochistan-color: #dc3545;
+            --wedding-color: #e83e8c;
+            --corporate-color: #20c997;
+            --private-color: #ffc107;
+            --decor-color: #6f42c1;
+            --entertainment-color: #fd7e14;
+            --gold-color: #FFD700;
+            --sand-color: #F4E4BC;
+            --ocean-blue: #1E90FF;
+            --sunset-orange: #FF6347;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #1a1a1a;
+            background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1920&auto=format&fit=crop&q=80&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmVhY2h8ZW58MHx8MHx8fDA%3D');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(30, 144, 255, 0.7) 0%, rgba(255, 99, 71, 0.5) 100%);
+            z-index: -1;
+        }
+        
+        .overlay {
+            min-height: 100vh;
+            backdrop-filter: blur(2px);
+        }
+        
+        /* ===== HEADER CSS ===== */
+        #mainNav {
+            background: transparent;
+            backdrop-filter: blur(10px);
+            border-radius: 0 0 15px 15px;
+            padding: 10px 0;
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #fff !important;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: #f0c14b !important;
+        }
+
+        .navbar-toggler {
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+
+        @media (max-width: 768px) {
+            .navbar-collapse {
+                background: rgba(0,0,0,0.85);
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 10px;
+            }
+        }
+        
+        /* ===== FOOTER CSS ===== */
+        #foot {
+            background: transparent;
+            color: #fff;
+            padding: 60px 0 30px;
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        #foot h2,
+        #foot h5 {
+            color: #fff;
+        }
+
+        #footer-link {
+            list-style: none;
+            padding: 0;
+        }
+
+        #footer-link li {
+            margin-bottom: 8px;
+        }
+
+        #footer-link a {
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        #footer-link a:hover {
+            color: #f0c14b;
+        }
+
+        #foot p {
+            color: #ccc;
+        }
+
+        #foot .form-control {
+            background: rgba(0,0,0,0.6);
+            border: 1px solid #555;
+            color: #fff;
+        }
+        
+        /* Main Content Styles */
+        main {
+            flex: 1;
+            padding: 20px 0;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin: 30px 0 40px;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .page-title h2 {
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #f0c14b;
+        }
+        
+        .page-title p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Main Image Gallery Styles */
+        .main-gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .main-gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            height: 250px;
+            position: relative;
+            transition: all 0.4s ease;
+            border: 3px solid transparent;
+            background: transparent;
+        }
+        
+        .main-gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: #f0c14b;
+        }
+        
+        .main-gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .main-gallery-item:hover .main-gallery-img {
+            transform: scale(1.1);
+        }
+        
+        .main-gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 15px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .section-title {
+            border-left: 5px solid #f0c14b;
+            padding-left: 20px;
+            margin: 50px 0 30px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 20px;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .event-category {
+            margin-bottom: 40px;
+        }
+        
+        .event-header {
+            padding: 20px;
+            color: white;
+            font-weight: 700;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 0;
+            font-size: 1.4rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            background: transparent;
+            backdrop-filter: blur(10px);
+        }
+        
+        .wedding-header {
+            border-left: 5px solid var(--wedding-color);
+            border-right: 5px solid var(--wedding-color);
+            border-top: 5px solid var(--wedding-color);
+        }
+        
+        .corporate-header {
+            border-left: 5px solid var(--corporate-color);
+            border-right: 5px solid var(--corporate-color);
+            border-top: 5px solid var(--corporate-color);
+        }
+        
+        .private-header {
+            border-left: 5px solid var(--private-color);
+            border-right: 5px solid var(--private-color);
+            border-top: 5px solid var(--private-color);
+        }
+        
+        .decor-header {
+            border-left: 5px solid var(--decor-color);
+            border-right: 5px solid var(--decor-color);
+            border-top: 5px solid var(--decor-color);
+        }
+        
+        .entertainment-header {
+            border-left: 5px solid var(--entertainment-color);
+            border-right: 5px solid var(--entertainment-color);
+            border-top: 5px solid var(--entertainment-color);
+        }
+        
+        .event-images {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 25px;
+            background: transparent;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border-left: 5px solid rgba(255, 255, 255, 0.3);
+            border-right: 5px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 5px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .event-img-container {
+            border-radius: 10px;
+            overflow: hidden;
+            height: 180px;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            background: transparent;
+        }
+        
+        .event-img-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: #f0c14b;
+        }
+        
+        .event-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .event-img-container:hover .event-img {
+            transform: scale(1.1);
+        }
+        
+        .event-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        /* Beach Locations Section */
+        .locations-section {
+            background: transparent;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 50px 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .locations-header {
+            border-left: 5px solid var(--ocean-blue);
+            padding-left: 20px;
+            margin-bottom: 30px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .locations-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .beach-list-container {
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .beach-list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .beach-list-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        
+        .beach-list-container::-webkit-scrollbar-thumb {
+            background: var(--ocean-blue);
+            border-radius: 10px;
+        }
+        
+        .beach-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s;
+            cursor: pointer;
+            font-weight: 500;
+            border-left: 4px solid transparent;
+            color: white;
+        }
+        
+        .beach-item:hover {
+            background: rgba(30, 144, 255, 0.2);
+            padding-left: 25px;
+        }
+        
+        .beach-item.active {
+            background: rgba(30, 144, 255, 0.3);
+            color: white;
+            border-left: 5px solid #f0c14b;
+        }
+        
+        .region-title {
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            font-weight: 700;
+            color: white;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+        
+        .sindh-region {
+            border-left: 5px solid var(--sindh-color);
+            background: rgba(25, 135, 84, 0.2);
+        }
+        
+        .balochistan-region {
+            border-left: 5px solid var(--balochistan-color);
+            background: rgba(220, 53, 69, 0.2);
+        }
+        
+        .map-container {
+            height: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 3px solid var(--ocean-blue);
+        }
+        
+        #beachMap {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .location-info {
+            padding: 20px;
+            background: rgba(30, 144, 255, 0.2);
+            border-radius: 10px;
+            margin-top: 15px;
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .location-info.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .location-info h5 {
+            color: white;
+        }
+        
+        .location-info p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .badge-region {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 20px;
+            margin-right: 8px;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .badge-sindh {
+            background: rgba(25, 135, 84, 0.7);
+        }
+        
+        .badge-balochistan {
+            background: rgba(220, 53, 69, 0.7);
+        }
+        
+        .footer-copyright {
+            text-align: center;
+            padding: 20px 0 0;
+            margin-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+        }
+        
+        .beach-stats {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #f0c14b;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .stat-label {
+            color: white;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 992px) {
+            .main-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .event-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .locations-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-gallery {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .event-images {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                padding: 15px;
+            }
+            
+            .main-gallery-item, .event-img-container {
+                height: 200px;
+            }
+            
+            .map-container {
+                height: 300px;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            .main-gallery {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .event-images {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <!-- ===== HEADER / NAVBAR ===== -->
+        <nav class="navbar navbar-expand-lg" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">Evora</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="gallery.html">Gallery</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="order.html">Order Now</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="container">
+            <!-- Page Title -->
+            <div class="page-title">
+                <h2><i class="fas fa-images me-2"></i> Event Gallery</h2>
+                <p>Explore our stunning beach event setups and destinations across Pakistan's beautiful coastline</p>
+            </div>
+            
+            <!-- Beach Statistics -->
+            <div class="beach-stats">
+                <div class="row text-center">
+                    <div class="col-md-3 col-6 stat-item">
+                        <div class="stat-number">34</div>
+                        <div class="stat-label">Beach Locations</div>
+                    </div>
+                    <div class="col-md-3 col-6 stat-item">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Event Categories</div>
+                    </div>
+                    <div class="col-md-3 col-6 stat-item">
+                        <div class="stat-number">20+</div>
+                        <div class="stat-label">Services Offered</div>
+                    </div>
+                    <div class="col-md-3 col-6 stat-item">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">Events Managed</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main 8 Images Gallery (Full Width) -->
+            <section>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="main-gallery">
+                                <!-- Top 8 Beach Images -->
+                                <div class="main-gallery-item" data-location="clifton">
+                                    <img src="https://images.unsplash.com/photo-1559496417-e7c25c4fcb0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Clifton Beach" class="main-gallery-img">
+                                    <div class="main-gallery-overlay">Clifton Beach, Karachi</div>
+                                </div>
+                                <div class="main-gallery-item" data-location="french">
+                                    <img src="https://images.unsplash.com/photo-1520454974749-611b7248ffdb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="French Beach" class="main-gallery-img">
+                                    <div class="main-gallery-overlay">French Beach, Karachi</div>
+                                </div>
+                                <div class="main-gallery-item" data-location="paradise">
+                                    <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Paradise Point" class="main-gallery-img">
+                                    <div class="main-gallery-overlay">Paradise Point, Karachi</div>
+                                </div>
+                                <div class="main-gallery-item" data-location="kund-malir">
+                                    <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Kund Malir Beach" class="main-gallery-img">
+                                    <div class="main-gallery-overlay">Kund Malir Beach</div>
+                                </div>
+                                <div class="main-gallery-item" data-location="manora">
+                                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Manora Beach" class="main-gallery-img">
+                                    <div class="main-gallery-overlay">Manora Beach, Karachi</div>
+                                </div>
+                                <div class="main-gallery-item" data-location="gwadar">
+                                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Gwadar Beach" class="main-gallery-img">
+                                    <div class="main-gallery-overlay">Gwadar Beach</div>
+                                </div>
+                                <div class="main-gallery-item" data-location="sandspit">
+                                    <img src="https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Sandspit Beach" class="main-gallery-img">
+                                    <div class="main-gallery-overlay">Sandspit Beach</div>
+                                </div>
+                                <div class="main-gallery-item" data-location="turtle">
+                                    <img src="https://images.unsplash.com/photo-1519602035691-16ac8b8c86cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Turtle Beach" class="main-gallery-img">
+                                    <div class="main-gallery-overlay">Turtle Beach</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Event Categories Section -->
+            <h2 class="section-title">Beach Event Categories</h2>
+            
+            <!-- Beach Weddings -->
+            <div class="event-category">
+                <h4 class="event-header wedding-header">
+                    <i class="fas fa-heart me-2"></i> Beach Weddings
+                </h4>
+                <div class="event-images">
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Beach Wedding Mandap" class="event-img">
+                        <div class="event-label">Wedding Mandap Setup</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Beach Wedding Decor" class="event-img">
+                        <div class="event-label">Floral Decorations</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Beach Wedding Ceremony" class="event-img">
+                        <div class="event-label">Wedding Ceremony</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Beach Wedding Reception" class="event-img">
+                        <div class="event-label">Reception Setup</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Corporate Events -->
+            <div class="event-category">
+                <h4 class="event-header corporate-header">
+                    <i class="fas fa-briefcase me-2"></i> Corporate Events
+                </h4>
+                <div class="event-images">
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Corporate Team Event" class="event-img">
+                        <div class="event-label">Company Team Building</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Corporate Party" class="event-img">
+                        <div class="event-label">Corporate Beach Party</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Branding Setup" class="event-img">
+                        <div class="event-label">Branding & Setup</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Corporate Conference" class="event-img">
+                        <div class="event-label">Beachside Conference</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Private Parties -->
+            <div class="event-category">
+                <h4 class="event-header private-header">
+                    <i class="fas fa-glass-cheers me-2"></i> Private Parties
+                </h4>
+                <div class="event-images">
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Birthday Party" class="event-img">
+                        <div class="event-label">Birthday Celebrations</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Anniversary Party" class="event-img">
+                        <div class="event-label">Anniversary Events</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Night Beach Party" class="event-img">
+                        <div class="event-label">Night Beach Parties</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Private Gathering" class="event-img">
+                        <div class="event-label">Private Gatherings</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Decor & Setup -->
+            <div class="event-category">
+                <h4 class="event-header decor-header">
+                    <i class="fas fa-paint-brush me-2"></i> Decor & Setup
+                </h4>
+                <div class="event-images">
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1492684223066-e9d3f74c0a30?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Stage Setup" class="event-img">
+                        <div class="event-label">Stage & Lighting</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Seating Arrangement" class="event-img">
+                        <div class="event-label">Seating Arrangements</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Theme Decoration" class="event-img">
+                        <div class="event-label">Theme Decorations</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Event Setup" class="event-img">
+                        <div class="event-label">Complete Event Setup</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Entertainment & Activities -->
+            <div class="event-category">
+                <h4 class="event-header entertainment-header">
+                    <i class="fas fa-music me-2"></i> Entertainment & Activities
+                </h4>
+                <div class="event-images">
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="DJ Performance" class="event-img">
+                        <div class="event-label">DJ & Music</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1501281667305-0d4ebd5b1b7d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Fire Show" class="event-img">
+                        <div class="event-label">Fire Performances</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Live Music" class="event-img">
+                        <div class="event-label">Live Band Performances</div>
+                    </div>
+                    <div class="event-img-container">
+                        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Beach Games" class="event-img">
+                        <div class="event-label">Beach Games & Activities</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Beach Locations Section (Before Footer) -->
+            <div class="locations-section">
+                <h2 class="locations-header">
+                    <i class="fas fa-map-marked-alt me-2"></i> Beach Locations & Directions
+                </h2>
+                
+                <div class="locations-container">
+                    <!-- Beach List -->
+                    <div class="beach-list-container">
+                        <!-- Sindh Region -->
+                        <div class="region-title sindh-region">
+                            <i class="fas fa-umbrella-beach me-2"></i> Sindh Beaches
+                        </div>
+                        <div class="beach-item active" data-beach="karachi" data-lat="24.8607" data-lng="66.9905" data-region="Sindh">
+                            <span class="badge badge-region badge-sindh">Sindh</span>
+                            Karachi
+                        </div>
+                        <div class="beach-item" data-beach="clifton" data-lat="24.8054" data-lng="67.0287" data-region="Sindh">
+                            <span class="badge badge-region badge-sindh">Sindh</span>
+                            Clifton Beach
+                        </div>
+                        <div class="beach-item" data-beach="french" data-lat="24.7822" data-lng="66.9865" data-region="Sindh">
+                            <span class="badge badge-region badge-sindh">Sindh</span>
+                            French Beach
+                        </div>
+                        <div class="beach-item" data-beach="hawkes" data-lat="24.8211" data-lng="66.9475" data-region="Sindh">
+                            <span class="badge badge-region badge-sindh">Sindh</span>
+                            Hawke's Bay
+                        </div>
+                        <div class="beach-item" data-beach="paradise" data-lat="24.8422" data-lng="66.7100" data-region="Sindh">
+                            <span class="badge badge-region badge-sindh">Sindh</span>
+                            Paradise Point
+                        </div>
+                        <div class="beach-item" data-beach="manora" data-lat="24.7994" data-lng="66.9775" data-region="Sindh">
+                            <span class="badge badge-region badge-sindh">Sindh</span>
+                            Manora Beach
+                        </div>
+                        <div class="beach-item" data-beach="sandspit" data-lat="24.8358" data-lng="66.9433" data-region="Sindh">
+                            <span class="badge badge-region badge-sindh">Sindh</span>
+                            Sandspit Beach
+                        </div>
+                        <div class="beach-item" data-beach="turtle" data-lat="24.8297" data-lng="66.9389" data-region="Sindh">
+                            <span class="badge badge-region badge-sindh">Sindh</span>
+                            Turtle Beach
+                        </div>
+                        
+                        <!-- Balochistan Region -->
+                        <div class="region-title balochistan-region">
+                            <i class="fas fa-umbrella-beach me-2"></i> Balochistan Beaches
+                        </div>
+                        <div class="beach-item" data-beach="kund-malir" data-lat="25.4236" data-lng="66.3864" data-region="Balochistan">
+                            <span class="badge badge-region badge-balochistan">Balochistan</span>
+                            Kund Malir Beach
+                        </div>
+                        <div class="beach-item" data-beach="gwadar" data-lat="25.1264" data-lng="62.3225" data-region="Balochistan">
+                            <span class="badge badge-region badge-balochistan">Balochistan</span>
+                            Gwadar Beach
+                        </div>
+                        <div class="beach-item" data-beach="ormara" data-lat="25.2089" data-lng="64.6358" data-region="Balochistan">
+                            <span class="badge badge-region badge-balochistan">Balochistan</span>
+                            Ormara
+                        </div>
+                        <div class="beach-item" data-beach="jiwani" data-lat="25.0500" data-lng="61.7447" data-region="Balochistan">
+                            <span class="badge badge-region badge-balochistan">Balochistan</span>
+                            Jiwani
+                        </div>
+                        <div class="beach-item" data-beach="sonmiani" data-lat="25.3833" data-lng="66.6333" data-region="Balochistan">
+                            <span class="badge badge-region badge-balochistan">Balochistan</span>
+                            Sonmiani Beach
+                        </div>
+                    </div>
+                    
+                    <!-- Map Container -->
+                    <div>
+                        <div class="map-container">
+                            <div id="beachMap"></div>
+                        </div>
+                        <div class="location-info" id="locationInfo">
+                            <h5 id="locationName">Karachi</h5>
+                            <p id="locationDescription">Main coastal city of Sindh with multiple beach areas available for events.</p>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" id="getDirectionsBtn">
+                                    <i class="fas fa-directions me-2"></i> Get Directions
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- ===== FOOTER ===== -->
+        <footer id="foot">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <h2>Evora</h2>
+                        <p>Your modern event platform connecting people and creating unforgettable experiences. From beach weddings to corporate events, we bring your vision to life against the backdrop of Pakistan's stunning coastline.</p>
+                    </div>
+
+                    <div class="col-6 col-md-3 mb-4">
+                        <h5>Quick Links</h5>
+                        <ul id="footer-link">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="about.html">About Us</a></li>
+                            <li><a href="gallery.html">Gallery</a></li>
+                            <li><a href="order.html">Order Now</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-6 col-md-3 mb-4">
+                        <h5>Stay Connected</h5>
+                        <p>Subscribe for exclusive updates & beach event offers</p>
+                        <form class="d-flex">
+                            <input type="email" class="form-control me-2" placeholder="Email">
+                            <button class="btn btn-warning">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="footer-copyright">
+                    <p class="mb-0">© 2023 Evora Beach Event Management. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet JS for Maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        // Initialize map
+        let map = null;
+        let currentMarker = null;
+        let currentLocation = {
+            name: "Karachi",
+            lat: 24.8607,
+            lng: 66.9905,
+            region: "Sindh",
+            description: "Main coastal city of Sindh with multiple beach areas available for events."
+        };
+
+        // Location data
+        const locations = {
+            "karachi": {
+                name: "Karachi",
+                lat: 24.8607,
+                lng: 66.9905,
+                region: "Sindh",
+                description: "Main coastal city of Sindh with multiple beach areas available for events."
+            },
+            "clifton": {
+                name: "Clifton Beach",
+                lat: 24.8054,
+                lng: 67.0287,
+                region: "Sindh",
+                description: "Popular beach in Karachi known for its beautiful sunset views and event-friendly areas."
+            },
+            "french": {
+                name: "French Beach",
+                lat: 24.7822,
+                lng: 66.9865,
+                region: "Sindh",
+                description: "Secluded beach perfect for private events and intimate gatherings."
+            },
+            "hawkes": {
+                name: "Hawke's Bay",
+                lat: 24.8211,
+                lng: 66.9475,
+                region: "Sindh",
+                description: "Famous beach known for turtle nesting and serene environment for events."
+            },
+            "paradise": {
+                name: "Paradise Point",
+                lat: 24.8422,
+                lng: 66.7100,
+                region: "Sindh",
+                description: "Rocky beach with natural beauty, ideal for photography and special events."
+            },
+            "manora": {
+                name: "Manora Beach",
+                lat: 24.7994,
+                lng: 66.9775,
+                region: "Sindh",
+                description: "Historic beach area with lighthouse, perfect for cultural events."
+            },
+            "sandspit": {
+                name: "Sandspit Beach",
+                lat: 24.8358,
+                lng: 66.9433,
+                region: "Sindh",
+                description: "Wide sandy beach excellent for large gatherings and beach sports."
+            },
+            "turtle": {
+                name: "Turtle Beach",
+                lat: 24.8297,
+                lng: 66.9389,
+                region: "Sindh",
+                description: "Protected beach area known for marine life, suitable for eco-friendly events."
+            },
+            "kund-malir": {
+                name: "Kund Malir Beach",
+                lat: 25.4236,
+                lng: 66.3864,
+                region: "Balochistan",
+                description: "Pristine beach with golden sand and clear blue water, perfect for destination events."
+            },
+            "gwadar": {
+                name: "Gwadar Beach",
+                lat: 25.1264,
+                lng: 62.3225,
+                region: "Balochistan",
+                description: "Strategic coastal location with modern facilities for corporate and large-scale events."
+            },
+            "ormara": {
+                name: "Ormara",
+                lat: 25.2089,
+                lng: 64.6358,
+                region: "Balochistan",
+                description: "Remote beach town offering exclusive privacy for high-end events."
+            },
+            "jiwani": {
+                name: "Jiwani",
+                lat: 25.0500,
+                lng: 61.7447,
+                region: "Balochistan",
+                description: "Coastal town near Iranian border, ideal for unique destination events."
+            },
+            "sonmiani": {
+                name: "Sonmiani Beach",
+                lat: 25.3833,
+                lng: 66.6333,
+                region: "Balochistan",
+                description: "Beautiful beach with mud volcanoes, perfect for adventurous events."
+            }
+        };
+
+        // Initialize map when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the map
+            initMap();
+            
+            // Set Karachi as default
+            updateMapLocation(currentLocation);
+            
+            // Beach list interaction
+            const beachItems = document.querySelectorAll('.beach-item');
+            
+            beachItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all items
+                    beachItems.forEach(i => i.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Get location data
+                    const beachId = this.getAttribute('data-beach');
+                    const lat = parseFloat(this.getAttribute('data-lat'));
+                    const lng = parseFloat(this.getAttribute('data-lng'));
+                    const region = this.getAttribute('data-region');
+                    const name = this.textContent.replace(/Sindh|Balochistan/g, '').trim();
+                    
+                    // Update current location
+                    currentLocation = {
+                        name: name,
+                        lat: lat,
+                        lng: lng,
+                        region: region,
+                        description: locations[beachId]?.description || `Beautiful beach in ${region} perfect for events.`
+                    };
+                    
+                    // Update map
+                    updateMapLocation(currentLocation);
+                    
+                    // Show location info
+                    document.getElementById('locationInfo').classList.add('active');
+                    document.getElementById('locationName').textContent = name;
+                    document.getElementById('locationDescription').textContent = currentLocation.description;
+                });
+            });
+            
+            // Get Directions button
+            document.getElementById('getDirectionsBtn').addEventListener('click', function() {
+                if (currentLocation) {
+                    // Open Google Maps with directions
+                    const url = `https://www.google.com/maps/dir/?api=1&destination=${currentLocation.lat},${currentLocation.lng}`;
+                    window.open(url, '_blank');
+                }
+            });
+            
+            // Main gallery images click
+            const galleryItems = document.querySelectorAll('.main-gallery-item');
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const locationId = this.getAttribute('data-location');
+                    if (locations[locationId]) {
+                        // Find and click corresponding beach item
+                        const beachItem = document.querySelector(`.beach-item[data-beach="${locationId}"]`);
+                        if (beachItem) {
+                            beachItem.click();
+                            
+                            // Scroll to locations section
+                            document.querySelector('.locations-section').scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // Event images interaction
+            const eventImages = document.querySelectorAll('.event-img-container');
+            eventImages.forEach(img => {
+                img.addEventListener('click', function() {
+                    const label = this.querySelector('.event-label').textContent;
+                    const category = this.closest('.event-category').querySelector('.event-header').textContent;
+                    
+                    alert(`Event Category: ${category}\nService: ${label}`);
+                });
+            });
+            
+            // Make current page link active in navbar
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                const linkHref = link.getAttribute('href');
+                if (linkHref === currentPage || (linkHref === '#' && currentPage.includes('gallery'))) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Footer subscription form
+            const footerForm = document.querySelector('#foot form');
+            footerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const emailInput = this.querySelector('input[type="email"]');
+                if (emailInput.value) {
+                    alert('Thank you for subscribing to Evora Beach Events! You will receive our newsletter soon.');
+                    emailInput.value = '';
+                }
+            });
+        });
+        
+        // Initialize Leaflet map
+        function initMap() {
+            map = L.map('beachMap').setView([24.8607, 66.9905], 10);
+            
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+        }
+        
+        // Update map location
+        function updateMapLocation(location) {
+            // Remove previous marker
+            if (currentMarker) {
+                map.removeLayer(currentMarker);
+            }
+            
+            // Add new marker
+            currentMarker = L.marker([location.lat, location.lng])
+                .addTo(map)
+                .bindPopup(`<b>${location.name}</b><br>${location.region}<br><small>${location.description}</small>`)
+                .openPopup();
+            
+            // Center map on location
+            map.setView([location.lat, location.lng], 12);
+        }
+    </script>
+</body>
+</html>
