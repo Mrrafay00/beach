@@ -555,6 +555,65 @@
             </div>
         </div>
     </footer>
+<script>
+  // Function to show custom styled alert
+  function showCustomAlert(message) {
+    const alertBox = document.createElement('div');
+    alertBox.textContent = message;
+
+    // Style alert box
+    alertBox.style.position = 'fixed';
+    alertBox.style.top = '20px';
+    alertBox.style.right = '20px';
+    alertBox.style.background = 'linear-gradient(135deg, #f6d365, #fda085)';
+    alertBox.style.color = '#fff';
+    alertBox.style.padding = '15px 25px';
+    alertBox.style.borderRadius = '10px';
+    alertBox.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
+    alertBox.style.fontWeight = '700';
+    alertBox.style.fontSize = '1rem';
+    alertBox.style.zIndex = '9999';
+    alertBox.style.opacity = '0';
+    alertBox.style.transition = 'opacity 0.5s, transform 0.5s';
+    alertBox.style.transform = 'translateY(-20px)';
+
+    document.body.appendChild(alertBox);
+
+    // Animate in
+    setTimeout(() => {
+      alertBox.style.opacity = '1';
+      alertBox.style.transform = 'translateY(0)';
+    }, 10);
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+      alertBox.style.opacity = '0';
+      alertBox.style.transform = 'translateY(-20px)';
+      setTimeout(() => alertBox.remove(), 500);
+    }, 3000);
+  }
+
+  // Footer subscribe button only
+  const footerForm = document.querySelector('#foot form');
+  const footerSection = document.getElementById('foot');
+
+  footerForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    showCustomAlert("Thank you for subscribing! We received your email."); // custom alert
+
+    footerSection.style.backgroundColor = "rgba(0,128,0,0.8)";
+    footerSection.style.color = "#fff";
+
+    const thankMsgFooter = document.createElement('p');
+    thankMsgFooter.textContent = "Thank you so much!";
+    thankMsgFooter.style.fontSize = "1rem";
+    thankMsgFooter.style.fontWeight = "700";
+    thankMsgFooter.style.marginTop = "15px";
+
+    footerSection.querySelector('.container').appendChild(thankMsgFooter);
+    footerForm.reset();
+  });
+</script>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
