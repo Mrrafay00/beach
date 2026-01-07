@@ -90,27 +90,27 @@ p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px; }
 .stars { margin-top:10px; color:#f0c14b; font-size:1rem; }
 
 /* CONTACT US */
-.contact-us {
+#contact-us {
     background: url('https://media.istockphoto.com/id/2220899488/photo/group-of-professionals-seated-and-chatting-in-a-modern-office-setting.webp?a=1&b=1&s=612x612&w=0&k=20&c=FpzcZAR-9YqbJtln0dzy85Lh7SFkHd6VIpuJv9pdpe8=') center/cover no-repeat;
     color: #fff;
     position: relative;
     padding: 80px 0;
 }
-.contact-us::before {
+#contact-us::before {
     content:"";
     position:absolute; inset:0;
     background: rgba(0,0,0,0.5);
     z-index:0;
 }
-.contact-us .container { position:relative; z-index:1; }
-.contact-us h1 { font-size:clamp(2rem,5vw,3rem); font-weight:900; margin-bottom:30px; text-transform:uppercase; }
-.contact-us p { font-size:1.1rem; line-height:1.6; margin-bottom:15px; }
-.contact-us form { display:flex; flex-direction:column; gap:15px; }
-.contact-us .form-control {border-radius:5px; padding:10px; border:none; }
-.contact-us .form-control:focus { outline:none; box-shadow:0 0 5px #f0c14b; }
-.contact-us .btn { border-radius:5px; padding:12px 25px; border:1px solid #fff; background:transparent; color:#fff; font-weight:bold; text-transform:uppercase; transition:0.3s; }
-.contact-us .btn:hover { background:#fff; color:#000; }
+#contact-us .container { position:relative; z-index:1; }
+#contact-us h1 { font-size:clamp(2rem,5vw,3rem); font-weight:900; margin-bottom:30px; text-transform:uppercase; }
+#contact-us p { font-size:1.1rem; line-height:1.6; margin-bottom:15px; }
+#contact-us form { display:flex; flex-direction:column; gap:15px; }
+3contact-us .form-control {border-radius:5px; padding:10px; border:none; }
+#contact-us .form-control:focus { outline:none; box-shadow:0 0 5px #f0c14b; }
+#contact-us .btn { border-radius:5px; padding:12px 25px; border:1px solid #fff; background:transparent; color:#fff; font-weight:bold; text-transform:uppercase; transition:0.3s; }
+#contact-us .btn:hover { background:#fff; color:#000; }
 
 @media (max-width:768px) {
-    .contact-us .row { text-align:center; }
+    #contact-us .row { text-align:center; }
 }
