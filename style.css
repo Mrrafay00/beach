@@ -106,7 +106,7 @@ p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px; }
 #contact-us h1 { font-size:clamp(2rem,5vw,3rem); font-weight:900; margin-bottom:30px; text-transform:uppercase; }
 #contact-us p { font-size:1.1rem; line-height:1.6; margin-bottom:15px; }
 #contact-us form { display:flex; flex-direction:column; gap:15px; }
-3contact-us .form-control {border-radius:5px; padding:10px; border:none; }
+#contact-us .form-control {border-radius:5px; padding:10px; border:none; }
 #contact-us .form-control:focus { outline:none; box-shadow:0 0 5px #f0c14b; }
 #contact-us .btn { border-radius:5px; padding:12px 25px; border:1px solid #fff; background:transparent; color:#fff; font-weight:bold; text-transform:uppercase; transition:0.3s; }
 #contact-us .btn:hover { background:#fff; color:#000; }
@@ -114,3 +114,19 @@ p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 30px; }
 @media (max-width:768px) {
     #contact-us .row { text-align:center; }
 }
+/* Thank You Message Styles */
+      .thank-you-message {
+        background: linear-gradient(135deg, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9)) !important;
+        color: white !important;
+        padding: 15px 20px !important;
+        border-radius: 10px !important;
+        text-align: center !important;
+        margin-top: 20px !important;
+        animation: fadeIn 0.5s ease !important;
+        box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3) !important;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
